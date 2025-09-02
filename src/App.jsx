@@ -202,10 +202,10 @@ export default function App() {
           <div>
             <h2 style={{ color: "var(--playa)" }}>About</h2>
             <p className="lede">
-              Treble Makers is a community of artists, engineers, and friends who build intimate stages and curate long‑form musical journeys across the Black Rock Desert. We host live players alongside selectors—strings, synths, voices—woven into deep, melodic grooves.
+              Treble Makers is a community of builders, artists, and friends who build intimate stages and curate long‑form musical journeys across the Black Rock Desert. We host live players alongside selectors—strings, synths, voices—woven into deep, melodic grooves.
             </p>
             <p style={{ marginTop: 12, color: "#f0e8db" }}>
-              We gather throughout the year when the desert is calm, sharing sunrise sessions and hardware jams under open skies. If you’d like to collaborate, bring an instrument, or record a set out there, reach out.
+              We gather throughout the year, but the wilder the weather, the harder we party. White-outs and dust storms just mean the bass hits different.
             </p>
           </div>
           <div className="card" style={{ minHeight: 320 }}>
