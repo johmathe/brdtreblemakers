@@ -11,9 +11,9 @@ import React, { useEffect, useState } from "react";
 
 // -------------------- QUICK CONFIG --------------------
 const SITE = {
-  name: "Treble Makers",
+  name: "TREBLE MAKERS",
   tagline:
-    "A collective bringing live music and sunrise-to-sunset sets to the Black Rock Desert.",
+    "We are a community of builders bringing live and electronic music to the Black Rock Desert.",
   soundcloudUser: "brdtreblemakers", // SoundCloud handle
   socials: [
     { label: "SoundCloud", href: "https://soundcloud.com/brdtreblemakers" },
@@ -171,10 +171,6 @@ export default function App() {
               <a key={l.href} href={l.href}>{l.label}</a>
             ))}
           </nav>
-          <button className="mobile-btn" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="mobile-nav">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18M3 12h18M3 18h18" stroke="#fff" strokeWidth="2" strokeLinecap="round"/></svg>
-            Menu
-          </button>
         </div>
         <div id="mobile-nav" className={`mobile-panel ${open ? "open" : ""}`}>
           <div className="container">

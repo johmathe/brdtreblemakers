@@ -1,0 +1,7 @@
+name = "treble-makers"
+pages_build_output_dir = "./dist"
+
+[vars]
+# Optional: environment variables available at build/deploy time
+# NODE_VERSION = "20"
+
