@@ -1,6 +1,5 @@
 .PHONY: help dev build preview lint clean install deps
 
-# Default target
 help:
 	@echo "Available targets:"
 	@echo "  dev      - Start development server"
