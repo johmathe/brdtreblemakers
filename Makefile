@@ -1,4 +1,4 @@
-.PHONY: help dev build preview lint clean install deps
+.PHONY: help dev build preview lint clean deploy install deps
 
 help:
 	@echo "Available targets:"
@@ -37,3 +37,6 @@ install:
 
 # Alias for install
 deps: install
+
+deploy: lint build
+	wrangler pages deploy dist --project-name=treble-makers
