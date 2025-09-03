@@ -37,18 +37,11 @@ const IMAGES = {
 };
 
 // Instagram username for gallery
+
+// Instagram feed via Behold API
 const INSTAGRAM_USER = "brdtreblemakers";
-
-// Instagram images - you'll need to update these URLs with actual Instagram image URLs
-const INSTAGRAM_IMAGES = [
-  "https://scontent.cdninstagram.com/v/t51.2885-15/example1.jpg", // Replace with actual URLs
-  "https://scontent.cdninstagram.com/v/t51.2885-15/example2.jpg", // Replace with actual URLs  
-  "https://scontent.cdninstagram.com/v/t51.2885-15/example3.jpg", // Replace with actual URLs
-  "https://scontent.cdninstagram.com/v/t51.2885-15/example4.jpg", // Replace with actual URLs
-  "https://scontent.cdninstagram.com/v/t51.2885-15/example5.jpg", // Replace with actual URLs
-  "https://scontent.cdninstagram.com/v/t51.2885-15/example6.jpg", // Replace with actual URLs
-];
-
+const IG_FEED_URL = "https://feeds.behold.so/M0hNNC3e27XdGK7f3e0Q";
+const IG_LIMIT = 9; // number of squares to show
 // -------------------- STYLE INJECTION --------------------
 function UseHead() {
   useEffect(() => {
@@ -92,7 +85,7 @@ const CSS = `
   }
   a{color:var(--playa); text-decoration:none}
   a:hover{color:var(--red); opacity:1}
-  .container{max-width:1100px; margin:0 auto; padding:0 24px}
+  .container{width:100%; margin:0; padding:0 24px}
   .btn{display:inline-block; padding:10px 16px; border:1px solid #ffffff22; border-radius:12px; color:#fff; background:transparent}
   .btn:hover{background:#ffffff14}
 
@@ -109,8 +102,8 @@ const CSS = `
   .mobile-panel a{display:block; padding:12px 24px}
 
   /* Hero */
-  .hero{position:relative; min-height:100vh; display:flex; align-items:center;}
-  .hero img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.85; filter:grayscale(.1) contrast(1.05)}
+  .hero{position:relative; min-height:100vh; display:flex; align-items:center; width:100%;}
+  .hero img{position:absolute; inset:0; width:100vw; height:100%; object-fit:cover; opacity:.85; filter:grayscale(.1) contrast(1.05)}
   .hero .scrim{position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.65), rgba(0,0,0,.2) 40%, rgba(0,0,0,.9))}
   .hero .content{position:relative; text-align:center; padding:120px 0 56px}
   .title{font-size:clamp(42px,8vw,96px); line-height:1.05; font-weight:800; letter-spacing:.02em}
@@ -128,7 +121,7 @@ const CSS = `
     .about-grid{grid-template-columns: 1.1fr .9fr; align-items:center}
   }
   .card{position:relative; border:1px solid #ffffff14; border-radius:20px; overflow:hidden; background:linear-gradient(180deg, #1a1a1a, #0d0d0d)}
-  .card img{width:100%; height:100%; object-fit:cover}
+  .card img{width:100%; height:100%; object-fit:cover; max-width:100vw}
   .card::before{content:""; position:absolute; inset:-1px; border-radius:20px; padding:1px; background:linear-gradient(135deg, #ffffff18, transparent 35%); -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite:xor; mask-composite:exclude}
 
   /* Music */
@@ -137,7 +130,7 @@ const CSS = `
   /* Gallery */
   .gallery-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px; margin-top:16px}
   .gallery-item{aspect-ratio:1; overflow:hidden; border-radius:12px; border:1px solid #ffffff14}
-  .gallery-item img{width:100%; height:100%; object-fit:cover}
+  .gallery-item img{width:100%; height:100%; object-fit:cover; max-width:100vw}
 
   /* Contact */
   .contact{display:flex; flex-direction:column; align-items:center; gap:14px}
@@ -157,6 +150,43 @@ function Style() {
 // -------------------- PAGE --------------------
 export default function App() {
   const [open, setOpen] = useState(false);
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch(IG_FEED_URL);
+        if (!res.ok) return;
+        const data = await res.json();
+        const grid = document.getElementById("ig-grid");
+        if (!grid) return;
+        grid.innerHTML = "";
+        
+        // Take the first IG_LIMIT posts
+        const posts = (data.posts || []).slice(0, IG_LIMIT);
+        
+        posts.forEach((post) => {
+          const a = document.createElement("a");
+          a.href = post.permalink || `https://instagram.com/${INSTAGRAM_USER}`;
+          a.target = "_blank";
+          a.rel = "noreferrer";
+          a.className = "gallery-item";
+          
+          const img = document.createElement("img");
+          // Use the medium size for better quality
+          img.src = post.sizes?.medium?.mediaUrl || post.mediaUrl || post.thumbnailUrl;
+          img.alt = post.caption || "Instagram";
+          img.loading = "lazy";
+          img.style.width = "100%";
+          img.style.height = "100%";
+          img.style.objectFit = "cover";
+          
+          a.appendChild(img);
+          grid.appendChild(a);
+        });
+      } catch (error) {
+        console.error("Failed to fetch Instagram feed:", error);
+      }
+    })();
+  }, []);
   return (
     <div>
       <UseHead />
@@ -205,7 +235,7 @@ export default function App() {
               Treble Makers is a community of builders, artists, and friends who build intimate stages and curate long‑form musical journeys across the Black Rock Desert. We host live players alongside selectors—strings, synths, voices—woven into deep, melodic grooves.
             </p>
             <p style={{ marginTop: 12, color: "#f0e8db" }}>
-              We gather throughout the year, but the wilder the weather, the harder we party. White-outs and dust storms just mean the bass hits different.
+              The wilder the weather, the harder we party. White-outs and dust storms just mean the bass hits different.
             </p>
           </div>
           <div className="card" style={{ minHeight: 320 }}>
@@ -236,18 +266,17 @@ export default function App() {
 
       {/* Gallery */}
       <section id="gallery">
-        <div className="container">
-          <h2 style={{ color: "var(--playa)" }}>Gallery</h2>
-          <p className="lede">A few moments from past gatherings—build days, small shows, and quiet nights under the stars.</p>
-          <div className="gallery-grid">
-            {INSTAGRAM_IMAGES.map((src, i) => (
-              <div key={i} className="gallery-item">
-                <img src={src} alt="Gallery" />
-              </div>
-            ))}
-          </div>
+      <div className="container">
+        <h2 style={{ color: "var(--playa)" }}>Gallery</h2>
+        <p className="lede">Latest moments from Instagram.</p>
+        <div className="gallery-grid" id="ig-grid">{/* filled by /api/ig */}</div>
+        <div style={{ textAlign: "center", marginTop: 16 }}>
+          <a href={`https://instagram.com/${INSTAGRAM_USER}`} target="_blank" rel="noreferrer">
+            @{INSTAGRAM_USER}
+          </a>
         </div>
-      </section>
+      </div>
+    </section>
 
       {/* Contact */}
       <section id="contact" style={{ background: "linear-gradient(180deg, #0a0a0a, #050505)" }}>
@@ -266,9 +295,6 @@ export default function App() {
       <footer>
         <div className="container row">
           <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-            {SITE.socials.map((s) => (
-              <a key={s.href} href={s.href} target="_blank" rel="noreferrer" className="muted">{s.label}</a>
-            ))}
           </div>
         </div>
       </footer>
