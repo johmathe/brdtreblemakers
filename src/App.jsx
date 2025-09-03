@@ -128,7 +128,7 @@ const CSS = `
   .player{border:1px solidrgba(70, 70, 70, 0.08); border-radius:20px; overflow:hidden}
 
   /* Gallery */
-  .gallery-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px; margin-top:16px}
+  .gallery-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; margin-top:16px}
   .gallery-item{aspect-ratio:1; overflow:hidden; border-radius:12px; border:1px solid #ffffff14}
   .gallery-item img{width:100%; height:auto; object-fit:cover; max-width:100vw}
 
