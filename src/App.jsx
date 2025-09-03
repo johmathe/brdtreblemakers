@@ -24,7 +24,7 @@ const SITE = {
   nav: [
     { label: "Home", href: "#home" },
     { label: "About", href: "#about" },
-    { label: "Music", href: "#music" },
+    { label: "SoundCloud", href: "#music" },
     { label: "Gallery", href: "#gallery" },
     { label: "Contact", href: "#contact" },
   ],
@@ -121,16 +121,16 @@ const CSS = `
     .about-grid{grid-template-columns: 1.1fr .9fr; align-items:center}
   }
   .card{position:relative; border:1px solid #ffffff14; border-radius:20px; overflow:hidden; background:linear-gradient(180deg, #1a1a1a, #0d0d0d)}
-  .card img{width:100%; height:100%; object-fit:cover; max-width:100vw}
+  .card img{width:100%;  object-fit:cover; max-width:100vw}
   .card::before{content:""; position:absolute; inset:-1px; border-radius:20px; padding:1px; background:linear-gradient(135deg, #ffffff18, transparent 35%); -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite:xor; mask-composite:exclude}
 
   /* Music */
-  .player{border:1px solid #ffffff14; border-radius:20px; overflow:hidden}
+  .player{border:1px solidrgba(70, 70, 70, 0.08); border-radius:20px; overflow:hidden}
 
   /* Gallery */
   .gallery-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px; margin-top:16px}
   .gallery-item{aspect-ratio:1; overflow:hidden; border-radius:12px; border:1px solid #ffffff14}
-  .gallery-item img{width:100%; height:100%; object-fit:cover; max-width:100vw}
+  .gallery-item img{width:100%; height:auto; object-fit:cover; max-width:100vw}
 
   /* Contact */
   .contact{display:flex; flex-direction:column; align-items:center; gap:14px}
@@ -248,7 +248,7 @@ export default function App() {
       <section id="music" style={{ background: "linear-gradient(180deg, #0e0e0e, #090909)" }}>
         <div className="container">
           <div style={{ display: "flex", alignItems: "end", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
-            <h2 style={{ color: "var(--playa)" }}>Music</h2>
+            <h2 style={{ color: "var(--playa)" }}>SoundCloud</h2>
             <a href={`https://soundcloud.com/${SITE.soundcloudUser}`} target="_blank" rel="noreferrer">View all on SoundCloud →</a>
           </div>
           <p className="lede" style={{ marginTop: 10 }}>Recent mixes and live recordings from the dust. Follow for the full archive.</p>
@@ -267,8 +267,7 @@ export default function App() {
       {/* Gallery */}
       <section id="gallery">
       <div className="container">
-        <h2 style={{ color: "var(--playa)" }}>Gallery</h2>
-        <p className="lede">Latest moments from Instagram.</p>
+        <h2 style={{ color: "var(--playa)" }}>Instagram</h2>
         <div className="gallery-grid" id="ig-grid">{/* filled by /api/ig */}</div>
         <div style={{ textAlign: "center", marginTop: 16 }}>
           <a href={`https://instagram.com/${INSTAGRAM_USER}`} target="_blank" rel="noreferrer">
