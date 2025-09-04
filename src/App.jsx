@@ -121,7 +121,7 @@ const CSS = `
     .about-grid{grid-template-columns: 1.1fr .9fr; align-items:center}
   }
   .card{position:relative; border:1px solid #ffffff14; border-radius:20px; overflow:hidden; background:linear-gradient(180deg, #1a1a1a, #0d0d0d)}
-  .card img{width:100%;  object-fit:cover; max-width:100vw}
+  .card img{ width: 100%;   height: 100%; object-fit: cover; display: block;      /* removes baseline gap */ }
   .card::before{content:""; position:absolute; inset:-1px; border-radius:20px; padding:1px; background:linear-gradient(135deg, #ffffff18, transparent 35%); -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite:xor; mask-composite:exclude}
 
   /* Music */
