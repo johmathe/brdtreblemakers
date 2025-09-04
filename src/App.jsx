@@ -256,9 +256,9 @@ export default function App() {
             <iframe
               title="SoundCloud Player"
               width="100%"
-              height="420"
+              height="500"
               allow="autoplay"
-              src={`https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/${SITE.soundcloudUser}&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&visual=true`}
+              src={`https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/${SITE.soundcloudUser}&auto_play=false&show_artwork=false&hide_related=true&show_comments=false&show_user=false&color=#220000f&show_reposts=false&visual=false`}
             />
           </div>
         </div>
