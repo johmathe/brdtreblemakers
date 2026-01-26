@@ -13,7 +13,7 @@ import React, { useEffect, useState } from "react";
 const SITE = {
   name: "TREBLE MAKERS",
   tagline:
-    "We are a community of builders bringing live and electronic music to the Black Rock Desert.",
+    "A community of builders bringing live and electronic music to the Black Rock Desert.",
   soundcloudUser: "brdtreblemakers", // SoundCloud handle
   socials: [
     { label: "SoundCloud", href: "https://soundcloud.com/brdtreblemakers" },
@@ -235,7 +235,7 @@ export default function App() {
               Treble Makers is a community of builders, artists, and friends who build intimate stages and curate long‑form musical journeys across the Black Rock Desert. We host live players alongside selectors—strings, synths, voices—woven into deep, melodic grooves.
             </p>
             <p style={{ marginTop: 12, color: "#f0e8db" }}>
-              The wilder the weather, the harder we party. White-outs and dust storms just mean the bass hits different.
+              The wilder the weather, the louder we play. White-outs and dust storms just mean the bass hits different.
             </p>
           </div>
           <div className="card" style={{ minHeight: 320 }}>
