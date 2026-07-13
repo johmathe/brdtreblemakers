@@ -13,6 +13,28 @@ const SITE = {
   email: "hello@treblemakers.org",
 };
 
+// Instagram feed via Behold (https://behold.so). Reconnect the account on the
+// Behold dashboard if this stops showing recent posts.
+const IG_FEED_URL = "https://feeds.behold.so/M0hNNC3e27XdGK7f3e0Q";
+const IG_LIMIT = 8;
+
+function useInstagram() {
+  const [posts, setPosts] = React.useState([]);
+  React.useEffect(() => {
+    let alive = true;
+    fetch(IG_FEED_URL)
+      .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((data) => {
+        if (alive) setPosts((data.posts || []).slice(0, IG_LIMIT));
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, []);
+  return posts;
+}
+
 function UseHead() {
   React.useEffect(() => {
     const link = document.createElement("link");
@@ -102,6 +124,13 @@ const CSS = `
   .player{border:1px solid rgba(237,226,207,.2);border-radius:4px;overflow:hidden;background:var(--panel)}
   .player iframe{display:block;border:0}
 
+  /* instagram */
+  .ig-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+  .ig-item{display:block;position:relative;aspect-ratio:1/1;overflow:hidden;border-radius:3px;background:var(--panel)}
+  .ig-item img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
+    filter:saturate(.9);transition:transform .4s ease,filter .4s ease}
+  .ig-item:hover img{transform:scale(1.04);filter:saturate(1)}
+
   /* join + support */
   .cards{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--hairline);
     border-bottom:1px solid var(--hairline)}
@@ -133,6 +162,7 @@ const GALLERY = [
 ];
 
 export default function App() {
+  const igPosts = useInstagram();
   return (
     <div>
       <UseHead />
@@ -171,7 +201,8 @@ export default function App() {
         <img src="/images/dust_dance.jpg" alt="White-out dance floor" />
         <div className="copy">
           <h2>The wilder the weather,<br />the louder we play.</h2>
-          <p>Builders, artists and friends hauling live and electronic music into the Black Rock Desert.</p>
+          <p>Treble Makers is a community of builders, artists, and friends who build intimate stages and curate long-form musical journeys across the Black Rock Desert. We host live players alongside selectors—strings, synths, voices—woven into deep, melodic grooves.</p>
+          <p>White-outs and dust storms just mean the bass hits different.</p>
         </div>
       </section>
 
@@ -207,6 +238,23 @@ export default function App() {
           />
         </div>
       </section>
+
+      {/* Instagram */}
+      {igPosts.length > 0 && (
+        <section id="instagram" className="container">
+          <div className="section-head">
+            <h2>From the playa.</h2>
+            <a className="section-link" href={`https://instagram.com/${SITE.instagram}`} target="_blank" rel="noreferrer">@{SITE.instagram} ↗</a>
+          </div>
+          <div className="ig-grid">
+            {igPosts.map((p) => (
+              <a key={p.id} className="ig-item" href={p.permalink || `https://instagram.com/${SITE.instagram}`} target="_blank" rel="noreferrer">
+                <img src={(p.sizes && p.sizes.small && p.sizes.small.mediaUrl) || p.mediaUrl} alt={p.prunedCaption ? p.prunedCaption.slice(0, 80) : "Treble Makers on Instagram"} loading="lazy" />
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Join + Support */}
       <section className="cards">
