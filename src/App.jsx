@@ -1,61 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 /**
- * Treble Makers — single-file React component for Vite
- * Drop this file into:  src/App.jsx  (or rename and import in src/main.jsx)
- * No Tailwind required. Fonts and styles are injected at runtime.
- *
- * Replace image URLs in IMAGES and GALLERY with your assets.
- * Keep copy free of certain event names; this uses neutral language.
+ * Treble Makers — 2026 redesign ("Dust at Dusk")
+ * Drop into: src/App.jsx (replaces the old one)
+ * Uses existing /public/images/*. Gallery images are served from johmathe.github.io.
+ * Design system: red #B8002A (#E8434F on dark), playa beige #D9CBB5, ink #0F0C0A, Readex Pro.
  */
 
-// -------------------- QUICK CONFIG --------------------
 const SITE = {
-  name: "TREBLE MAKERS",
-  tagline:
-    "A community of builders bringing live and electronic music to the Black Rock Desert.",
-  soundcloudUser: "brdtreblemakers", // SoundCloud handle
-  socials: [
-    { label: "SoundCloud", href: "https://soundcloud.com/brdtreblemakers" },
-    { label: "Instagram", href: "https://instagram.com/brdtreblemakers" },
-    // { label: "YouTube", href: "https://youtube.com/@yourhandle" },
-    // { label: "Email", href: "mailto:hello@example.com" },
-  ],
-  nav: [
-    { label: "Home", href: "#home" },
-    { label: "About", href: "#about" },
-    { label: "SoundCloud", href: "#music" },
-    { label: "Gallery", href: "#gallery" },
-    { label: "Contact", href: "#contact" },
-  ],
+  soundcloudUser: "brdtreblemakers",
+  instagram: "brdtreblemakers",
+  email: "hello@treblemakers.org",
 };
 
-// Hero + about images
-const IMAGES = {
-  hero: "/images/camp_day_wide.jpg", // wide banner
-  about: "/images/camp_sunset_back.jpg", // portrait or landscape works
-};
-
-// Instagram username for gallery
-
-// Instagram feed via Behold API
-const INSTAGRAM_USER = "brdtreblemakers";
-const IG_FEED_URL = "https://feeds.behold.so/M0hNNC3e27XdGK7f3e0Q";
-const IG_LIMIT = 9; // number of squares to show
-// -------------------- STYLE INJECTION --------------------
 function UseHead() {
-  useEffect(() => {
-    // Readex Pro font (Google Fonts)
+  React.useEffect(() => {
     const link = document.createElement("link");
     link.rel = "stylesheet";
     link.href =
       "https://fonts.googleapis.com/css2?family=Readex+Pro:wght@200..700&display=swap";
     document.head.appendChild(link);
 
-    // Favicon (optional)
     const ico = document.createElement("link");
     ico.rel = "icon";
-    ico.href = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='46' fill='%23b8002a'/><path d='M25 62h10l6-10 6 10h10L50 38 25 62z' fill='white'/></svg>";
+    ico.href =
+      "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230F0C0A'/><text x='50' y='68' font-family='sans-serif' font-weight='700' font-size='52' fill='%23E8434F' text-anchor='middle' transform='scale(-1,1) rotate(7 50 50)' transform-origin='50 50'>E</text></svg>";
     document.head.appendChild(ico);
 
     return () => {
@@ -68,236 +37,207 @@ function UseHead() {
 
 const CSS = `
   :root{
-    /* Playa-inspired palette */
-    --playa:#d9cbb5;      /* warm beige */
-    --playa-2:#cdbda4;    /* deeper beige */
-    --ink:#111111;        /* near-black */
-    --red:#b8002a;        /* deep red */
-    --red-2:#7c001c;      /* darker red */
-    --text:#f4efe8;       /* light text */
+    --ink:#0F0C0A;
+    --panel:#171310;
+    --red:#B8002A;
+    --red-glow:#E8434F;
+    --beige:#D9CBB5;
+    --text:#EDE2CF;
+    --body:#C9BCA4;
+    --muted:#9C8E78;
+    --hairline:rgba(237,226,207,.14);
   }
   *{box-sizing:border-box}
-  html,body,#root{height:100%}
-  body{
-    margin:0; background:var(--ink); color:var(--text);
-    font-family:"Readex Pro", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-    line-height:1.5;
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--ink);color:var(--text);
+    font-family:"Readex Pro",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.5}
+  a{color:var(--beige);text-decoration:none}
+  a:hover{color:var(--red-glow)}
+
+  .flipped-e{display:inline-block;transform:scaleX(-1) rotate(7deg);color:var(--red-glow)}
+
+  /* hero */
+  .hero{position:relative;height:92vh;min-height:560px;overflow:hidden}
+  .hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .hero .scrim{position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(15,12,10,.75),rgba(15,12,10,.15) 42%,rgba(15,12,10,.92))}
+  .hero nav{position:relative;display:flex;align-items:center;justify-content:space-between;padding:22px 5vw}
+  .hero nav .brand{font-weight:700;font-size:13px;letter-spacing:.2em;color:var(--text)}
+  .hero nav .links{display:flex;gap:30px;font-size:11px;letter-spacing:.24em;font-weight:500}
+  .hero .content{position:absolute;left:0;right:0;bottom:64px;text-align:center;
+    display:flex;flex-direction:column;align-items:center;gap:20px;padding:0 4vw}
+  .hero h1{margin:0;font-size:clamp(48px,7.5vw,104px);line-height:.95;font-weight:700;
+    letter-spacing:.02em;text-shadow:0 4px 40px rgba(0,0,0,.5)}
+  .hero .meta{font-size:clamp(10px,1vw,12px);letter-spacing:.42em;color:var(--beige);font-weight:500}
+
+  /* sections */
+  .container{max-width:1200px;margin:0 auto;padding:64px 5vw;border-bottom:1px solid var(--hairline)}
+  h2{margin:0;font-size:clamp(26px,3vw,38px);font-weight:600;line-height:1.15}
+  .section-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+  .section-link{font-size:11.5px;letter-spacing:.2em;font-weight:600;color:var(--red-glow)}
+  .text-link{align-self:flex-start;font-size:11.5px;letter-spacing:.2em;font-weight:600;
+    color:var(--beige);border-bottom:1px solid var(--red-glow);padding-bottom:4px}
+
+  /* 2026 */
+  .year{display:flex;flex-wrap:wrap;gap:48px;align-items:center}
+  .year .num{font-size:clamp(90px,11vw,150px);font-weight:700;line-height:.9;color:var(--red-glow);
+    text-shadow:0 0 60px rgba(232,67,79,.35)}
+  .year .what{display:flex;flex-direction:column;gap:16px;flex:1;min-width:300px}
+  .year .what .headline{font-size:clamp(22px,2.4vw,30px);font-weight:500;line-height:1.3}
+
+  /* about */
+  .about{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--hairline)}
+  .about img{width:100%;height:100%;min-height:380px;object-fit:cover;display:block;filter:saturate(.9)}
+  .about .copy{padding:56px 5vw;display:flex;flex-direction:column;justify-content:center;gap:18px}
+  .about p{margin:0;font-size:15px;line-height:1.7;font-weight:300;color:var(--body);max-width:440px}
+
+  /* gallery */
+  .gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+  .gallery-grid figure{margin:0;display:flex;flex-direction:column;gap:10px}
+  .gallery-grid img{width:100%;height:220px;object-fit:cover;display:block;border-radius:3px}
+  .gallery-grid figcaption{font-size:11px;letter-spacing:.24em;color:var(--muted);font-weight:600}
+
+  /* music */
+  .player{border:1px solid rgba(237,226,207,.2);border-radius:4px;overflow:hidden;background:var(--panel)}
+  .player iframe{display:block;border:0}
+
+  /* join + support */
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--hairline);
+    border-bottom:1px solid var(--hairline)}
+  .photo-card{position:relative;height:420px;overflow:hidden;background:var(--ink)}
+  .photo-card>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55;display:block}
+  .photo-card .scrim{position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(15,12,10,.95))}
+  .photo-card .copy{position:absolute;left:5vw;right:5vw;bottom:32px;display:flex;flex-direction:column;gap:12px}
+  .photo-card .title{font-size:clamp(24px,2.4vw,30px);font-weight:600;line-height:1.2}
+
+  /* footer */
+  footer{padding:26px 5vw;display:flex;justify-content:space-between;align-items:center;
+    font-size:11.5px;letter-spacing:.18em;color:var(--muted);flex-wrap:wrap;gap:14px}
+  footer .brand{font-weight:700;color:var(--text)}
+  footer .links{display:flex;gap:24px}
+
+  @media (max-width:820px){
+    .about,.cards{grid-template-columns:1fr}
+    .hero nav .links{gap:18px}
   }
-  a{color:var(--playa); text-decoration:none}
-  a:hover{color:var(--red); opacity:1}
-  .container{width:100%; margin:0; padding:0 24px}
-  .btn{display:inline-block; padding:10px 16px; border:1px solid #ffffff22; border-radius:12px; color:#fff; background:transparent}
-  .btn:hover{background:#ffffff14}
-
-  /* Header */
-  header{position:fixed; inset:0 auto auto 0; height:64px; width:100%; display:flex; align-items:center; z-index:50;
-    backdrop-filter:saturate(150%) blur(8px);
-    background:linear-gradient(180deg, rgba(0,0,0,.6), rgba(0,0,0,.2)); border-bottom:1px solid #ffffff14}
-  header .brand{font-weight:700; letter-spacing:.08em}
-  nav{display:none; gap:20px}
-  @media (min-width: 768px){ nav{display:flex} }
-  .mobile-btn{margin-left:auto; padding:8px 10px; border:1px solid #ffffff22; border-radius:10px; display:flex; align-items:center; gap:8px}
-  .mobile-panel{display:none}
-  .mobile-panel.open{display:block; background:#000000d0; border-top:1px solid #ffffff14}
-  .mobile-panel a{display:block; padding:12px 24px}
-
-  /* Hero */
-  .hero{position:relative; min-height:100vh; display:flex; align-items:center; width:100%;}
-  .hero img{position:absolute; inset:0; width:100vw; height:100%; object-fit:cover; opacity:.85; filter:grayscale(.1) contrast(1.05)}
-  .hero .scrim{position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.65), rgba(0,0,0,.2) 40%, rgba(0,0,0,.9))}
-  .hero .content{position:relative; text-align:center; padding:120px 0 56px}
-  .title{font-size:clamp(42px,8vw,96px); line-height:1.05; font-weight:800; letter-spacing:.02em}
-  .tag{margin-top:12px; font-size:clamp(16px,2.2vw,22px); color:#f3e9dc; opacity:.9}
-  .cta{margin-top:18px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap}
-
-  /* Section shells */
-  section{padding:88px 0; border-top:1px solid #ffffff14}
-  h2{font-size:clamp(28px,3.2vw,40px); margin:0 0 12px 0}
-  .lede{color:#e9dfd2; opacity:.9; max-width:900px}
-
-  /* About */
-  .about-grid{display:grid; gap:28px}
-  @media (min-width: 980px){
-    .about-grid{grid-template-columns: 1.1fr .9fr; align-items:center}
-  }
-  .card{position:relative; border:1px solid #ffffff14; border-radius:20px; overflow:hidden; background:linear-gradient(180deg, #1a1a1a, #0d0d0d)}
-  .card img{ width: 100%;   height: 100%; object-fit: cover; display: block;      /* removes baseline gap */ }
-  .card::before{content:""; position:absolute; inset:-1px; border-radius:20px; padding:1px; background:linear-gradient(135deg, #ffffff18, transparent 35%); -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite:xor; mask-composite:exclude}
-
-  /* Music */
-  .player{border:1px solidrgba(70, 70, 70, 0.08); border-radius:20px; overflow:hidden}
-
-  /* Gallery */
-  .gallery-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; margin-top:16px}
-  .gallery-item{aspect-ratio:1; overflow:hidden; border-radius:12px; border:1px solid #ffffff14}
-  .gallery-item img{width:100%; height:auto; object-fit:cover; max-width:100vw}
-
-  /* Contact */
-  .contact{display:flex; flex-direction:column; align-items:center; gap:14px}
-  .badge{display:inline-flex; align-items:center; gap:10px; padding:10px 14px; border-radius:999px; border:1px solid #ffffff20; background:linear-gradient(180deg, #2a0a11, #140508); color:#fff}
-  .dot{width:8px; height:8px; border-radius:999px; background:var(--red)}
-
-  /* Footer */
-  footer{border-top:1px solid #ffffff14; background:#050505}
-  footer .row{display:flex; gap:16px; align-items:center; justify-content:space-between; flex-wrap:wrap; padding:22px 0}
-  .muted{color:#ffffff88}
 `;
 
-function Style() {
-  return <style dangerouslySetInnerHTML={{ __html: CSS }} />;
-}
+const FlippedE = () => <span className="flipped-e">E</span>;
 
-// -------------------- PAGE --------------------
+const GALLERY = [
+  { year: "2024", src: "/images/gallery_2024.jpg", alt: "Tower light-up" },
+  { year: "2023", src: "/images/gallery_2023.jpg", alt: "Rain at sunset" },
+  { year: "2022", src: "/images/gallery_2022.jpg", alt: "Stage at night" },
+  { year: "2021", src: "/images/gallery_2021.jpg", alt: "Art car at night" },
+];
+
 export default function App() {
-  const [open, setOpen] = useState(false);
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await fetch(IG_FEED_URL);
-        if (!res.ok) return;
-        const data = await res.json();
-        const grid = document.getElementById("ig-grid");
-        if (!grid) return;
-        grid.innerHTML = "";
-        
-        // Take the first IG_LIMIT posts
-        const posts = (data.posts || []).slice(0, IG_LIMIT);
-        
-        posts.forEach((post) => {
-          const a = document.createElement("a");
-          a.href = post.permalink || `https://instagram.com/${INSTAGRAM_USER}`;
-          a.target = "_blank";
-          a.rel = "noreferrer";
-          a.className = "gallery-item";
-          
-          const img = document.createElement("img");
-          // Use the medium size for better quality
-          img.src = post.sizes?.medium?.mediaUrl || post.mediaUrl || post.thumbnailUrl;
-          img.alt = post.caption || "Instagram";
-          img.loading = "lazy";
-          img.style.width = "100%";
-          img.style.height = "100%";
-          img.style.objectFit = "cover";
-          
-          a.appendChild(img);
-          grid.appendChild(a);
-        });
-      } catch (error) {
-        console.error("Failed to fetch Instagram feed:", error);
-      }
-    })();
-  }, []);
   return (
     <div>
       <UseHead />
-      <Style />
-
-      {/* Header */}
-      <header>
-        <div className="container" style={{ display: "flex", alignItems: "center", gap: 20 }}>
-          <a href="#home" className="brand">{SITE.name}</a>
-          <nav aria-label="Primary navigation">
-            {SITE.nav.map((l) => (
-              <a key={l.href} href={l.href}>{l.label}</a>
-            ))}
-          </nav>
-        </div>
-        <div id="mobile-nav" className={`mobile-panel ${open ? "open" : ""}`}>
-          <div className="container">
-            {SITE.nav.map((l) => (
-              <a key={l.href} href={l.href} onClick={() => setOpen(false)}>{l.label}</a>
-            ))}
-          </div>
-        </div>
-      </header>
+      <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
       {/* Hero */}
       <section id="home" className="hero">
-        <img src={IMAGES.hero} alt="Treble Makers hero" />
+        <img src="/images/camp_sunset_back.jpg" alt="Sunset over camp" />
         <div className="scrim" />
-        <div className="container content">
-          <h1 className="title" style={{ color: "var(--playa)" }}>{SITE.name}</h1>
-          <p className="tag">{SITE.tagline}</p>
-          <div className="cta">
-            {SITE.socials.map((s) => (
-              <a key={s.href} className="btn" href={s.href} target="_blank" rel="noreferrer">{s.label}</a>
-            ))}
+        <nav aria-label="Primary navigation">
+          <a href="#home" className="brand">TM<FlippedE /></a>
+          <div className="links">
+            <a href="#year">2026</a>
+            <a href="#music">MUSIC</a>
+            <a href="#join">JOIN</a>
+            <a href="#support">SUPPORT</a>
           </div>
+        </nav>
+        <div className="content">
+          <h1>TREBLE MAK<FlippedE />RS</h1>
+          <div className="meta">BLACK ROCK DESERT — AUG 30 → SEP 7, 2026</div>
+        </div>
+      </section>
+
+      {/* 2026 */}
+      <section id="year" className="container year">
+        <div className="num">'26</div>
+        <div className="what">
+          <div className="headline">New stage. More live instruments.<br />Applications open.</div>
+          <a className="text-link" href="#join">APPLY →</a>
         </div>
       </section>
 
       {/* About */}
-      <section id="about">
-        <div className="container about-grid">
-          <div>
-            <h2 style={{ color: "var(--playa)" }}>About</h2>
-            <p className="lede">
-              Treble Makers is a community of builders, artists, and friends who build intimate stages and curate long‑form musical journeys across the Black Rock Desert. We host live players alongside selectors—strings, synths, voices—woven into deep, melodic grooves.
-            </p>
-            <p style={{ marginTop: 12, color: "#f0e8db" }}>
-              The wilder the weather, the louder we play. White-outs and dust storms just mean the bass hits different.
-            </p>
-          </div>
-          <div className="card" style={{ minHeight: 320 }}>
-            <img src={IMAGES.about} alt="About Treble Makers" />
-          </div>
-        </div>
-      </section>
-
-      {/* Music / SoundCloud */}
-      <section id="music" style={{ background: "linear-gradient(180deg, #0e0e0e, #090909)" }}>
-        <div className="container">
-          <div style={{ display: "flex", alignItems: "end", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
-            <h2 style={{ color: "var(--playa)" }}>SoundCloud</h2>
-            <a href={`https://soundcloud.com/${SITE.soundcloudUser}`} target="_blank" rel="noreferrer">View all on SoundCloud →</a>
-          </div>
-          <p className="lede" style={{ marginTop: 10 }}>Recent mixes and live recordings from the dust. Follow for the full archive.</p>
-          <div className="player" style={{ marginTop: 16 }}>
-            <iframe
-              title="SoundCloud Player"
-              width="100%"
-              height="500"
-              allow="autoplay"
-              src={`https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/${SITE.soundcloudUser}&auto_play=false&show_artwork=false&hide_related=true&show_comments=false&show_user=false&color=#220000f&show_reposts=false&visual=false`}
-            />
-          </div>
+      <section className="about">
+        <img src="/images/dust_dance.jpg" alt="White-out dance floor" />
+        <div className="copy">
+          <h2>The wilder the weather,<br />the louder we play.</h2>
+          <p>Builders, artists and friends hauling live and electronic music into the Black Rock Desert.</p>
         </div>
       </section>
 
       {/* Gallery */}
-      <section id="gallery">
-      <div className="container">
-        <h2 style={{ color: "var(--playa)" }}>Instagram</h2>
-        <div className="gallery-grid" id="ig-grid">{/* filled by /api/ig */}</div>
-        <div style={{ textAlign: "center", marginTop: 16 }}>
-          <a href={`https://instagram.com/${INSTAGRAM_USER}`} target="_blank" rel="noreferrer">
-            @{INSTAGRAM_USER}
-          </a>
+      <section id="gallery" className="container">
+        <div className="section-head">
+          <h2>Five years in the dust.</h2>
+          <a className="section-link" href="https://johmathe.github.io/camp.html" target="_blank" rel="noreferrer">FULL GALLERY ↗</a>
         </div>
-      </div>
-    </section>
+        <div className="gallery-grid">
+          {GALLERY.map((g) => (
+            <figure key={g.year}>
+              <img src={g.src} alt={`${g.alt} ${g.year}`} loading="lazy" />
+              <figcaption>{g.year}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
 
-      {/* Contact */}
-      <section id="contact" style={{ background: "linear-gradient(180deg, #0a0a0a, #050505)" }}>
-        <div className="container contact">
-          <h2 style={{ color: "var(--playa)" }}>Contact</h2>
-          <div className="badge"><span className="dot" /> Open to live collaborations, sunset sessions & instrument-forward sets.</div>
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
-            {SITE.socials.map((s) => (
-              <a key={s.href} className="btn" href={s.href} target="_blank" rel="noreferrer">{s.label}</a>
-            ))}
+      {/* Music */}
+      <section id="music" className="container">
+        <div className="section-head">
+          <h2>Recorded in the dust.</h2>
+          <a className="section-link" href={`https://soundcloud.com/${SITE.soundcloudUser}`} target="_blank" rel="noreferrer">SOUNDCLOUD ↗</a>
+        </div>
+        <div className="player">
+          <iframe
+            title="SoundCloud Player"
+            width="100%"
+            height="420"
+            allow="autoplay"
+            src={`https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/${SITE.soundcloudUser}&auto_play=false&show_artwork=false&hide_related=true&show_comments=false&show_user=false&color=%23b8002a&show_reposts=false&visual=false`}
+          />
+        </div>
+      </section>
+
+      {/* Join + Support */}
+      <section className="cards">
+        <div id="join" className="photo-card">
+          <img src="/images/crane.jpg" alt="Stage build with crane" />
+          <div className="scrim" />
+          <div className="copy">
+            <div className="title">Join the camp.</div>
+            <a className="text-link" href={`mailto:${SITE.email}?subject=Joining%20for%202026`}>APPLY →</a>
+          </div>
+        </div>
+        <div id="support" className="photo-card">
+          <img src="/images/creme_brulee.jpg" alt="Crème brûlée night" />
+          <div className="scrim" />
+          <div className="copy">
+            <div className="title">Support the camp.</div>
+            <a className="text-link" href={`mailto:${SITE.email}?subject=Supporting%20the%20camp`}>CONTRIBUTE →</a>
           </div>
         </div>
       </section>
 
       {/* Footer */}
       <footer>
-        <div className="container row">
-          <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-          </div>
+        <span className="brand">TREBLE MAK<span className="flipped-e" style={{ color: "inherit" }}>E</span>RS</span>
+        <div className="links">
+          <a href={`https://soundcloud.com/${SITE.soundcloudUser}`} target="_blank" rel="noreferrer">SOUNDCLOUD</a>
+          <a href={`https://instagram.com/${SITE.instagram}`} target="_blank" rel="noreferrer">INSTAGRAM</a>
+          <a href={`mailto:${SITE.email}`}>EMAIL</a>
         </div>
+        <span>BLACK ROCK DESERT · EST. MMXXI</span>
       </footer>
     </div>
   );
 }
-
